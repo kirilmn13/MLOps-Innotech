@@ -52,18 +52,28 @@ def transform_data(df: pd.DataFrame):
 
 
 
-bento_model = bentoml.models.get(f"{MODEL_NAME}:latest")
-print(bento_model)
-model = bentoml.xgboost.load_model(bento_model)
+
+model_ref = bentoml.xgboost.get('xgboost:latest')
+_model_runner = model_ref.to_runner()
+#model_runner.init_local()
 
 # Create service with the model
-service = bentoml.Service('predict_employee', runners=[model])
+service = bentoml.Service('predict_employee', runners=[_model_runner])
 
 
-@service.api(input=JSON(pydantic_model=Employee), output=NumpyNdarray())
-def predict(employee: Employee) -> np.ndarray:
-    """Transform the data then make predictions"""
+# @service.api(input=JSON(pydantic_model=Employee), output=NumpyNdarray())
+# def predict(employee: Employee) -> np.ndarray:
+#     """Transform the data then make predictions"""
+#     df = pd.DataFrame(employee.dict(), index=[0])
+#     df = transform_data(df)
+#     result = service.run(df)[0]
+#     return np.array(result)
+
+
+@service.api(JSON(pydantic_model=Employee), output=NumpyNdarray())
+async def predict(employee: Employee) -> np.ndarray:
     df = pd.DataFrame(employee.dict(), index=[0])
     df = transform_data(df)
-    result = model.run(df)[0]
-    return np.array(result)
+    results = await _model_runner.predict_proba.async_run(df)
+    predictions = np.argmax(results, axis=1)  # 0 is not fraud, 1 is fraud
+    return np.array(results)
