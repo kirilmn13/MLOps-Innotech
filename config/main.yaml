@@ -32,7 +32,7 @@ model:
   path: ${model.dir}/${model.name}
 
 
-mlflow_tracking_ui: https://dagshub.com/kirilmn13/MLOps-e2e.mlflow
+mlflow_tracking_ui: https://dagshub.com/kirilmn13/MLOps-Innotech.mlflow
 mlflow_user: kirilmn13
 mlflow_api: e90bb58aed2b444b24a588dc01e9240810700ac2
 experiment: "MLOps-e2e"
