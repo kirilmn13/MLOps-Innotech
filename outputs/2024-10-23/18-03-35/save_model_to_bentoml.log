@@ -1,0 +1,2 @@
+[2024-10-23 18:03:35,808][_bentoml_impl.frameworks.xgboost][INFO] - Using the default model signature for xgboost ({'predict': {'batchable': False}}) for model "xgboost".
+[2024-10-23 18:03:36,828][httpx][INFO] - HTTP Request: POST https://t.bentoml.com "HTTP/1.1 200 OK"

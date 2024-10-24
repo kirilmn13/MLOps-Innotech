@@ -1,0 +1,8 @@
+dagshub==0.1.8
+hydra-core
+numpy==1.26.4
+pandas==1.4.2
+patsy
+streamlit==1.9.0
+xgboost==1.6.1
+joblib==1.1.0
