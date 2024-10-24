@@ -1,0 +1,154 @@
+#### Requisitos equipo
+=== Python3.10
+=== Docker
+=== Git
+
+########### ENV ############
+--> python -m venv .venv
+--> ./.venv/Scripts/activate
+! Comprobar entorno activado
+
+########## REPOS ###########
+--> Creamos Github REPO
+
+En VSCODE
+creamos gitignore y añadimos .venv
+---> echo "# MLOps-e2e" >> README.md
+     git init
+     git add .
+     git commit -m "first commit"
+     git branch -M main
+     git remote add origin https://github.com/kirilmn13/MLOps-e2e.git
+     git push -u origin main
+
+--> remove folder from --> git git rm -r folder
+--> reset commits --> git reset --hard HEAD
+
+--> Nos vamos Dagshub y creamos repo a partir de Github, hay que dar permisos
+    --> ya estaría todo sicronizado entre repos
+
+
+
+######### REQS #############
+--> python.exe -m pip install --upgrade pip  || python -m pip install --upgrade pip==23.2
+--> Copiamos requirements.txt
+--> pip install -r requirements.txt -U
+
+# PUSH
+
+########## CONFIG DVC ######
+--> pip install dvc
+--> pip install dvc-s3
+--> creamos folder data mkdir data estructura y metemos datos
+--> dvc init
+--> dentro de data creamos gitignore con las carpetas que tiene que gestionar DVC
+--> dvc remote add origin s3://dvc
+--> dvc remote modify origin endpointurl https://dagshub.com/kirilmn13/MLOps-e2e.s3
+--> dvc remote modify origin --local access_key_id e90bb58aed2b444b24a588dc01e9240810700ac2
+--> dvc remote modify origin --local secret_access_key e90bb58aed2b444b24a588dc01e9240810700ac2
+--> dvc push -r origin
+!!!DISCLAIMER!!!
+Hay que hacer los commits a git antes de DVC
+
+hay que añadir data a gitignore
+
+dvc add /data/raw/raw.csv
+dvc push -r origin
+
+dvc pull -r origin
+
+# PUSH
+
+
+########## PRE-COMMIT ######
+--> pip install pre-commit
+--> pre-commit install
+--> añadimos .pre-commit-config.yaml
+--> copiar config flake8 .flake8
+
+######### CONFIG HYDRA ########
+creamos carpeta config para gestionar hydra
+creamos main.yaml para configuracion principal
+
+creamos configs para modelos de hiperparámetros
+creamos configs para preprocesamiento elegir target y features
+todos estos configs estan enlazados al main
+desde el main se elige la del model y la del preprocces
+
+
+########## MFFLOW ######
+--> pip install mlflow
+-- cambiar tracking uri desde dagshb a config/main.yaml
+--> pip install dagshub
+--> pip install hyperopt
+--> pip install shap
+--> pip install yellowbrick
+--> pip install pandera
+
+
+hay que añadir a config esto en main
+mlflow_tracking_ui: https://dagshub.com/kirilmn13/MLOps-e2e.mlflow
+mlflow_user: kirilmn13
+mlflow_api: e90bb58aed2b444b24a588dc01e9240810700ac2
+experiment: "MLOps-e2e"
+
+
+mlflow server --backend-store-uri https://dagshub.com/kirilmn13/MLOps-e2e.mlflow
+############################################################### CONFIG PRINCIPAL del PIPE ahora empezamos a desarrollar
+
+introducimos todo el código en training
+-- helper.py para trazabilidad con mlflow
+
+
+
+
+desarrollamo todo el training entrenamos trazamos
+
+
+para pipelines en DVC generamos el dvc.yaml
+
+
+######################## APPLICATION BENTOML AND API FLASK  ########################
+
+--> Instalar requirements de application
+
+
+
+
+
+
+
+
+
+
+
+
+
+########## BENTOML ######
+--> pip install bentoml
+
+
+
+
+
+--------------------------------- NOTAS PARA PONENTES -----------------------------------------
+
+## añadir artifacts y leer
+## añadir report HYPEROPT
+## buyscar datadrift
+
+--- ML SIN OPS ES BASURA
+--- 90% de los modelos desarrollados se quedan sin desplegar
+--- Qué parte faltaría por automataizar, los training en máquina con MAKEFILE y algún scheduler
+
+
+$ git rm --cached giant_file
+# Stage our giant file for removal, but leave it on disk
+
+git commit --amend -CHEAD
+# Amend the previous commit with your change
+# Simply making a new commit won't work, as you need
+# to remove the file from the unpushed history as well
+
+git push
+# Push our rewritten, smaller commit
